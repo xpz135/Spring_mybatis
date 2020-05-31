@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+</head>
+<body>
+
+<script type="text/javascript">
+
+    $("#submit").click(function () {
+        var id = $("#id").val();
+        var name = $("#name").val();
+        var code = $("#code").val();
+        var address = $("#address").val();
+        $.ajax({
+            type: "post",
+            url: "addUser",
+            dataType: "text",
+            data: {
+                "Id": id,
+                "name": name,
+                "code": code,
+                "address": address,
+
+            },
+            success: function (result) {
+                if (result == "ok") {
+                    alert("添加成功!");
+                    location.href = "index.html";
+                } else {
+                    alert("添加失败!");
+                }
+            },
+            error: function () {
+                alert("请求出错了");
+            }
+        });
+
+    });
+
+
+    function aaa() {
+
+        location.href = "index.html";
+    }
+
+    function ccc() {
+
+        var id = $("#id").val();
+        var name = $("#name").val();
+        var code = $("#code").val();
+        var address = $("#address").val();
+        $.ajax({
+            type: "post",
+            url: "addUser",
+            dataType: "text",
+            data: {
+                "Id": id,
+                "name": name,
+                "code": code,
+                "address": address,
+
+            },
+            success: function (result) {
+                if (result == "ok") {
+                    alert("添加成功!");
+                    location.href = "index.html";
+                } else {
+                    alert("添加失败!");
+                }
+            },
+            error: function () {
+                alert("请求出错了");
+            }
+        });
+    }
+
+</script>
+
+<div>
+    <table border="1">
+        <tr>
+            <td colspan="2"><h1>新增用户</h1></td>
+        </tr>
+        <tr>
+            <td>id</td>
+            <td><input type="text" id="id" name="id"/></td>
+        </tr>
+        <tr>
+            <td>用户名：</td>
+            <td><input type="text" id="name" name="name"/></td>
+            </td>
+        </tr>
+        <tr>
+            <td>信息：</td>
+            <td><input type="text" id="code" name="code"/></td>
+        </tr>
+        <tr>
+            <td>地址：</td>
+            <td><input type="text" id="address" name="address"/></td>
+        </tr>
+        <tr>
+            <td colspan="2"><input type="button" value="提交" onclick="ccc()"/><input type="button" value="返回"
+                                                                                    onclick="aaa()"/>
+            </td>
+        </tr>
+
+    </table>
+
+
+</div>
+</body>
+</html>

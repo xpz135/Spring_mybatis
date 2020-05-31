@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>修改信息</title>
+</head>
+<script type="text/javascript" src="js/jquery-1.12.4.js"></script>
+<body>
+<table border="2">
+    <tr>
+        <td colspan="2"><h1>修改信息</h1></td>
+    </tr>
+    <tr>
+<!--        readonly="readonly"-->
+        <td>编号</td>
+        <td><input type="text" id="id" name="id" /></td>
+    </tr>
+    <tr>
+        <td>名称</td>
+        <td><input type="text" id="name" name="name"/></td>
+    </tr>
+    <tr>
+        <td>信息</td>
+        <td><input type="text" id="code" name="code"/></td>
+    </tr>
+    <tr>
+        <td>地址</td>
+        <td><input type="text" id="address" name="address"/></td>
+    </tr>
+    <tr>
+        <td colspan="2"><input type="button" value="提交" id="submit"/><input type="button" value="返回" onclick="aaa()"/>
+        </td>
+    </tr>
+
+</table>
+<script type="text/javascript">
+    function aaa() {
+        location.href = "index.html";
+    }
+
+    $(function () {
+        var url = window.location.search;
+        var theRequest = new Object();
+        if (url.indexOf("?") != -1) {
+            var str = url.substr(1);
+            strs = str.split("&");
+            for (var i = 0; i < strs.length; i++) {
+                theRequest[strs[i].split("=")[0]] = decodeURI(strs[i].split("=")[1]);
+            }
+        }
+        var id = theRequest["id"];
+        $.ajax({
+            type: "post",
+            url: "findByIde",
+            dataType: "json",
+            data: {"id": id},
+            success: function (result) {
+
+                $("#id").html(result.user.id);
+                $("#name").val(result.user.name);
+                $("#code").val(result.user.code);
+                $("#address").val(result.user.address);
+            },
+            error: function () {
+                alert("请求出错了");
+            }
+        })
+    });
+
+    $("#submit").click(function () {
+        var id = $("#id").val();
+        var name = $("#name").val();
+        var code = $("#code").val();
+        var address = $("#address").val();
+        if (name.length == 0 || name == null) {
+            alert("名称不能为空!");
+            return;
+        }
+        if (code.length == 0 || code == null) {
+            alert("信息不能为空!");
+            return;
+        }
+        if (address.length == 0 || address == null) {
+            alert("地址不能为空!");
+            return;
+        }
+        $.ajax({
+            type: "Get",
+            url: "update",
+            dataType: "text",
+            data: {
+                "id": id,
+                "name": name,
+                "code": code,
+                "address": address
+            },
+            success: function (result) {
+                if (result == "ok") {
+                    alert("添加成功!");
+                    location.href = "index.html";
+                } else {
+                    alert("添加失败!");
+                }
+            },
+            error: function () {
+                alert("请求出错了");
+            }
+        })
+    })
+</script>
+
+</body>
+</html>

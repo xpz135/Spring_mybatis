@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>主页</title>
+    <script type="text/javascript" src="js/jquery-1.12.4.js"></script>
+
+    <script type="text/javascript">
+        function qqq(){
+            // alert("1");
+            location.href = "Add.html";
+        }
+        $(function () {
+            //查询全部
+            $.ajax({
+                type: "GET",
+                url: "findAll",
+                dataType: "json",
+                success: function (result) {
+                    var trs = "<tr style='background: green;color: white;'>" +
+                        "<td>编号</td><td>名称</td><td>信息</td><td colspan='3'>操作</td></tr>";
+                    for (var i = 0; i < result.listUser.length; i++) {
+                        trs += "<tr><td>" + result.listUser[i].id + "</td><td>"
+                            + result.listUser[i].name
+                            + "</td><td>" + result.listUser[i].code + "</td><td>" + result.listUser[i].address + "</td>"
+                            + "<td><a class='delete' vid=" + result.listUser[i].id + ">删除</a></td>"
+                            + "<td><a href='update.html?id=" + result.listUser[i].id + "'>修改</a></td>"
+                            + "</tr>";
+                    }
+                    $("#abc").append(trs);
+                    $("tr:even").attr("bgColor", "pink");
+                },
+                error: function () {
+                    alert("请求出错了");
+                }
+            });
+
+            $(document).on("click", "a.delete", function () {
+                var obj = this;
+                var id = $(this).attr("vid");
+                if (confirm("确认删除吗？")) {
+                    $.ajax({
+                        type: "GET",
+                        url: "deleteById",
+                        data: {"id": id},
+                        dataType: "text",
+                        success: function (result) {
+                            if ("ok" == result) {
+                                alert("删除成功!");
+                                $(obj).parents("tr").remove();
+                              } else {
+                                alert("删除失败!");
+                            }
+                        }
+                    });
+                }
+            });
+
+            // $(document).on("click", "a.update", function () {
+            //     var id = $(this).attr("aid");
+            //     alert(4242);
+            //     $.get("findById?id="+id);
+            //
+            //
+            // });
+        })
+    </script>
+</head>
+<body>
+<div>
+    <h4>用户列表</h4>
+    <input type="button" value="新增电子图书" id="add" class="add" onclick="qqq()">
+    <table id="abc" border="1">
+    </table>
+</div>
+</body>
+</html>
